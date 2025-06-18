@@ -2,11 +2,14 @@ import { Body, Controller, Get, Post } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from '../models/user.model';
 import { Model } from 'mongoose';
+import { UserService } from '../services/user.service';
 
 @Controller('auth')
 export class AuthController {
 
-    constructor(@InjectModel(User.name) private UserModel: Model<User>){}
+    constructor(
+        private userService: UserService 
+    ){}
 
     @Get('test')
     test(){
@@ -16,12 +19,11 @@ export class AuthController {
     @Post()
     async createNewUser(@Body() req: User): Promise<User> {
         console.log('Creating new user:', req);
-        const user = new this.UserModel(req);
-        return user.save();
+        return this.userService.createNewUser(req);
     }
 
     @Get()
     async getAllUsers(){
-        return this.UserModel.find();
+        return this.userService.getAllUsers();
     }
 }

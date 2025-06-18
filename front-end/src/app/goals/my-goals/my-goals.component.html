@@ -1,0 +1,28 @@
+
+<button> + Add New Goal </button>
+<p-tree
+  [value]="nodes"
+  [draggableNodes]="true"
+  [droppableNodes]="true"
+  dragdropScope="self" 
+>
+  <ng-template let-node pTemplate="default">
+    <div class="my-custom-node">
+      {{ node.data.title }}
+      <br/>
+      {{ node.data.description }}
+      <br/>
+      <button> Edit </button>
+      <button> Delete </button>
+      <button (click)="showModal()"> Add Child </button>
+
+    </div>
+  </ng-template>
+</p-tree>
+
+<p-dialog [(visible)]="visible">
+  <ng-template #headless>
+      <div>
+        <new-goal></new-goal>
+      </div>
+</ng-template>

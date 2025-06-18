@@ -30,8 +30,8 @@ export class Goal {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Goal' })
   parentId?: mongoose.Types.ObjectId;
 
-  @Prop()
-  childGoals?: mongoose.Types.ObjectId[];
+  @Prop({ type: [mongoose.Schema.Types.ObjectId], ref: 'Goal' })
+  childGoals?: Goal[];
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
   ownerId: mongoose.Types.ObjectId;

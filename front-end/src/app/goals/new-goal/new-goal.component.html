@@ -1,0 +1,62 @@
+<form [formGroup]="goalForm">
+    <label for="title">title *</label><br/>
+    <input 
+        id="title" 
+        type="text" 
+        [ngClass]="{
+            'invalid-field': goalForm.controls['title'].invalid && 
+            goalForm.controls['title'].touched
+        }" 
+        pInputText 
+        formControlName="title" />
+
+    <br/>
+    <br/>
+    <label for="description">description *</label><br/>
+    <textarea 
+        rows="5" cols="30" 
+        pTextarea 
+        formControlName="description"
+        [ngClass]="{
+            'invalid-field': goalForm.controls['description'].invalid && 
+            goalForm.controls['description'].touched
+        }"     
+    ></textarea>
+
+    <br/>
+    <br/>
+    <label for="deadline">deadline *</label><br/>
+    <p-datepicker 
+        formControlName="deadLine" 
+        [showTime]="true" 
+        [showIcon]="true"
+        [ngClass]="{
+            'invalid-field': goalForm.controls['deadLine'].invalid && 
+            goalForm.controls['deadLine'].touched
+        }"    
+    />
+
+    <br/>
+    <label>is public:</label><br/>
+    <p-toggleswitch formControlName="isPublic" />
+    
+    <!-- errors box-->
+    @for (error of errors; track error;) {
+        <div class="error">{{ '*' +  error }}</div>
+    }
+    <br/>
+    <p-button (click)="createNewGoal()">
+        Create
+        @if (requestStatus == 'PENDING') {
+            <p-progress-spinner
+            strokeWidth="10"
+            class="spinner"
+            fill="transparent" 
+            animationDuration=".5s" 
+            [style]="{ width: '20px', height: '20px' }" />
+        } 
+    </p-button>
+
+
+
+</form>

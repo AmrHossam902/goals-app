@@ -1,0 +1,14 @@
+
+.invalid-field {
+    border-color: red;
+    border-width: 2px;
+}
+
+.error {
+    color: red;
+    font-size: 1.2em
+}
+
+.spinner ::ng-deep svg circle {
+    stroke: blue !important;
+}
