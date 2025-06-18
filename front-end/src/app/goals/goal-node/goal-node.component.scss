@@ -1,0 +1,67 @@
+.tree-node {
+    display: flex;
+    flex-direction: column;
+    width:50em;
+    max-width: 60%;
+    background-color: rgb(128, 192, 245);
+    padding: 0.5em;
+    color: black;
+    font-family: Arial, Helvetica, sans-serif;
+
+    .header {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+
+        h3 {
+            margin: 0.5em 0;
+        }
+
+        .edit-btn {
+            margin-left: auto;
+            display: inline-block;
+            width: 3em;
+            height: 3em;
+            background-color: dodgerblue;
+            border: none;
+            border-radius: 0.3em;
+            color: white;
+        }
+
+        .delete-btn {
+            display: inline-block;
+            width: 3em;
+            height: 3em;
+            margin-left: 0.3em;
+            background: red;
+            color: white;
+            border: none;
+            border-radius: 0.4em;
+        }
+    }
+
+    .body {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+
+        .desc {
+            width: 65%;
+        }
+
+        .deadline {
+            margin-left: auto;
+        }
+    }
+
+    .footer {
+        width: 100%;
+        display: flex;
+        flex-direction: row-reverse;
+
+    }
+}
+
+.error {
+    color: red;
+}

@@ -1,5 +1,4 @@
-
-<button> + Add New Goal </button>
+<button class="add-goal-btn" (click)="showModal()">+ Add Goal</button>
 <p-tree
   [value]="nodes"
   [draggableNodes]="true"
@@ -7,7 +6,9 @@
   dragdropScope="self" 
 >
   <ng-template let-node pTemplate="default">
-    <div class="my-custom-node">
+    <goal-node [treeNode]="node"></goal-node>
+
+    <!--     <div class="my-custom-node">
       {{ node.data.title }}
       <br/>
       {{ node.data.description }}
@@ -16,7 +17,7 @@
       <button> Delete </button>
       <button (click)="showModal()"> Add Child </button>
 
-    </div>
+    </div> -->
   </ng-template>
 </p-tree>
 

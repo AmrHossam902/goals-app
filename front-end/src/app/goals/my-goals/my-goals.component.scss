@@ -1,5 +1,18 @@
-.my-custom-node {
-    width: 500px;
-    height: 100px;
-    background-color: greenyellow;
+.add-goal-btn {
+    width: 37.5em;
+    height: 3em;
+    
+    margin-left: 3em;
+
+    background-color: darkgreen;
+    border-style: solid;
+    border-width: 0px;
+    border-radius: 0.3em;
+
+    transition: linear 0.2s;
 }
+
+.add-goal-btn:hover {
+    background-color: rgb(2, 154, 2);
+}
+

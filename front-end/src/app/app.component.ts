@@ -10,7 +10,4 @@ import { ButtonModule } from 'primeng/button';
 })
 export class AppComponent {
   title = 'front-end';
-
-
-
 }

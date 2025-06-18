@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { Goal } from '../models/goal.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { ObjectId } from 'mongodb';
@@ -78,10 +78,17 @@ export class GoalsController {
         ] */
     }
 
+
+    @Get(':id')
+    async getGoal(@Param('id') id: string){
+        return this.goalsService.getGoalById(id);
+    }
+
     @UseGuards(JwtAuthGuard)
     @Put(':id')
-    async updateGoal(@Body() req: Goal){
-        
+    async updateGoal(@Param('id') id: string, @CurrentUser()user, @Body() goalData: Goal){
+        goalData._id = id; 
+        return this.goalsService.putGoal("68515ba30643eef9f60ffd1e", goalData);
     }
 
 }

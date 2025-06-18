@@ -7,6 +7,7 @@ import { TreeModule } from 'primeng/tree';
 import { GoalsService } from '../goals.service';
 import { IGoal } from '../IGoal';
 import { NewGoalComponent } from '../new-goal/new-goal.component';
+import { GoalNodeComponent } from '../goal-node/goal-node.component';
 
 @Component({
   selector: 'app-my-goals',
@@ -16,7 +17,8 @@ import { NewGoalComponent } from '../new-goal/new-goal.component';
     TreeModule,
     DialogModule,
     CommonModule,
-    NewGoalComponent
+    NewGoalComponent,
+    GoalNodeComponent
   ],
   providers: [TreeDragDropService],
   templateUrl: './my-goals.component.html',
@@ -34,21 +36,22 @@ export class MyGoalsComponent implements OnInit{
   ngOnInit(){
     this.goalsService.getGoals().subscribe((data: any) => {
       console.log('Goals data:', data);
-      this.nodes = data.map((goal: IGoal) => this.mapGoalToNode(goal));
+      this.nodes = data.map((goal: IGoal) => this.mapGoalToNode(goal, 0));
     })
   }
 
-  mapGoalToNode(data: IGoal): TreeNode{
+  mapGoalToNode(data: IGoal, nodeLevel: number): TreeNode{
     let node: TreeNode = {
       label: data.title,
       data: {
-        ...data
+        ...data,
+        level: nodeLevel,
       },
       expanded: false,
     }
 
     if (data.childGoals && data.childGoals.length > 0) {
-      node.children = data.childGoals.map(child => this.mapGoalToNode(child));
+      node.children = data.childGoals.map(child => this.mapGoalToNode(child, nodeLevel + 1));
     }
 
     return node;

@@ -16,7 +16,7 @@ export class Goal {
   description: string;
 
   @Prop()
-  deadline?: Date;
+  deadline: Date;
 
   @Prop({ default: false })
   isPublic: boolean;

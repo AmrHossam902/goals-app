@@ -1,0 +1,116 @@
+@if(viewType == 'PUBLIC'){
+    <div class="tree-node">
+        <h3>
+            {{ treeNode.data.title }}
+        </h3>
+        <div>
+            <strong>Description:</strong> <br/>
+            {{ treeNode.data.description }}
+        </div>
+        <br/>
+        <div>
+            <strong>Deadline:</strong> <br/>
+            {{ treeNode.data.deadline }}
+        </div>
+    </div>
+}
+@else if(viewType == 'PRIVATE' && privateViewType == 'DISPLAY'){
+    <div class="tree-node">
+        <div class=header>
+            <h3>
+            {{ treeNode.data.title }}
+            </h3>
+            <button class="edit-btn" (click)="swtichViewModeTo('EDIT')">
+                <i class="pi pi-pencil"></i>
+            </button>
+            <button class="delete-btn">
+                <i class="pi pi-trash"></i>
+            </button>
+            @if (treeNode.data.isPublic) {
+                <span class="public-badge">Public</span>
+            }
+        </div>
+        <div class="body">
+            <div class="desc">
+                {{ treeNode.data.description }}
+            </div>
+            <div class="deadline">
+                {{ treeNode.data.deadline }}
+            </div>
+        </div>
+        <div class="footer">
+            @if (treeNode.data.level != 2){
+                <button class="add-child-btn">+ Add Child Goal</button>
+            }
+        </div>
+    </div>    
+}
+@else {
+    <form [formGroup]="editForm" class="tree-node">
+        <label for="title">title *</label><br/>
+        <input 
+            id="title" 
+            type="text" 
+            [ngClass]="{
+                'invalid-field': editForm.controls['title'].invalid && 
+                editForm.controls['title'].touched
+            }" 
+            pInputText 
+            formControlName="title" />
+    
+        <br/>
+        <br/>
+        <label for="description">description *</label><br/>
+        <textarea 
+            rows="5" cols="30" 
+            pTextarea 
+            formControlName="description"
+            [ngClass]="{
+                'invalid-field': editForm.controls['description'].invalid && 
+                editForm.controls['description'].touched
+            }"     
+        ></textarea>
+    
+        <br/>
+        <br/>
+        <label for="deadline">deadline *</label><br/>
+        <p-datepicker 
+            formControlName="deadLine" 
+            [showTime]="true" 
+            [showIcon]="true"
+            [ngClass]="{
+                'invalid-field': editForm.controls['deadLine'].invalid && 
+                editForm.controls['deadLine'].touched
+            }"    
+        />
+    
+        <br/>
+        <label>is public:</label><br/>
+        <p-toggleswitch formControlName="isPublic" />
+        
+        <!-- errors box-->
+        @for (error of editErrors; track error;) {
+            <div class="error">
+                <i class="pi pi-times-circle"></i>
+                {{ error }}
+            </div>
+        }
+        <br/>
+        <button (click)="updateGoal()">
+            Save
+        </button>
+        <button (click)="swtichViewModeTo('DISPLAY')">
+            discard
+        </button>
+    </form>
+}
+
+
+<!-- 
+
+
+
+<ng-template>
+
+</ng-template>
+ -->

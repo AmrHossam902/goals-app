@@ -3,10 +3,10 @@ export interface IGoal {
     _id?: string;
     title: string;
     description: string;
-    deadline?: Date;
+    deadline: Date;
     isPublic: boolean;
     publicId?: string;
-    order: number;
+    order?: number;
     parentId?: string;
     childGoals?: IGoal[];
     ownerId?: string;
