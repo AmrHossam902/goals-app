@@ -3,6 +3,7 @@ import { GoalsController } from './controllers/goals.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Goal, GoalSchema } from './models/goal.model';
 import { GoalsService } from './services/goals.service';
+import { PublicGoalsController } from './controllers/public-goals.controller';
 
 @Module({
   imports: [
@@ -13,7 +14,7 @@ import { GoalsService } from './services/goals.service';
       }
     ]) 
   ],
-  controllers: [GoalsController],
+  controllers: [GoalsController, PublicGoalsController],
   providers: [GoalsService],
 })
 export class GoalsModule {}

@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Goal } from "../models/goal.model";
 import { Model, Types } from "mongoose";
@@ -11,6 +11,11 @@ export class GoalsService {
     ){}
 
     async createNewGoal(goalData: Goal): Promise<Goal> {
+        //set public id if goal is public
+        if(goalData.isPublic){
+            goalData.publicId = new Types.ObjectId();
+        }
+
         const goal = new this.goalModel(goalData);
         return goal.save();
     }
@@ -30,19 +35,6 @@ export class GoalsService {
         .exec();
 
     }
-
-    async getGoalById(goalId: string): Promise<Goal | null> {
-        return this.goalModel.findOne({ _id: new Types.ObjectId(goalId) })
-            .populate({
-                path: 'childGoals',
-                populate: {
-                    path: 'childGoals',
-                    model: 'Goal'
-                }
-            })
-            .exec()
-    }
-
 
     async putGoal(userId: string, goalData: Goal) {
         const goal = await this.getGoalById(goalData._id);
@@ -72,14 +64,61 @@ export class GoalsService {
             const parentGoal = await this.getGoalById(goal.parentId.toString("hex"))
 
             if(parentGoal && 
-                new Date(parentGoal.deadline) < new Date(goal.deadline)
+                new Date(parentGoal.deadline) < new Date(goalData.deadline)
             ){
                 throw new HttpException("DEADLINE_CONFLICT_WITH_PARENT_GOAL", HttpStatus.BAD_REQUEST);
             }
         } 
 
-        return this.goalModel.updateOne({ _id: goalData._id }, goalData)
+
+        //remove publicId if isPublic is set to falses
+        let updateObj = { $set: goalData }
+        if(goalData.isPublic && !goalData.publicId){
+            goalData.publicId = new Types.ObjectId();
+        }
+        if(!goalData.isPublic){
+            updateObj['$unset'] = { publicId: "" } 
+            delete goalData.publicId;
+        }
+
+        return this.goalModel.updateOne({ _id: goalData._id }, updateObj)
         
+    }
+
+    async getGoalById(goalId: string): Promise<Goal | null> {
+        return this.goalModel.findOne({ _id: new Types.ObjectId(goalId) })
+            .populate({
+                path: 'childGoals',
+                populate: {
+                    path: 'childGoals',
+                    model: 'Goal'
+                }
+            })
+            .exec()
+    }
+
+    async getPublicGoalById(publicId: string){
+
+        return this.goalModel.findOne({ publicId: new Types.ObjectId(publicId) , isPublic: true})
+        .populate({
+            path: 'childGoals',
+            match: { isPublic: true },
+            populate: {
+                path: 'childGoals',
+                match: { isPublic: true },
+                model: 'Goal'
+            }
+        })
+        .exec()
+        .then((res)=>{
+            if(!res)
+                throw new HttpException("PUBLIC_GOAL_NOT_FOUND", HttpStatus.NOT_FOUND)
+            return res;
+        });
+    }
+
+    async getAllPublicGoals(){
+        return this.goalModel.find({ parentId: null, isPublic: true });
     }
 
 }

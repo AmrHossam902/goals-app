@@ -1,0 +1,19 @@
+@if(requestStatus == 'FETCHING') {
+    <div>...loading</div>
+}
+@else if(requestStatus == 'COMPLETE' && goalNode ) {
+  
+    <p-tree
+        [value]="[goalNode]"
+        [draggableNodes]="true"
+        [droppableNodes]="true"
+        dragdropScope="self" 
+        >
+        <ng-template let-node pTemplate="default">
+            <goal-node [treeNode]="node" viewType="PUBLIC"></goal-node>
+        </ng-template>
+    </p-tree>
+}
+@else{
+    <div>this link is no longer available</div>
+}

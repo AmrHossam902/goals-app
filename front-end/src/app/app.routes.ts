@@ -6,7 +6,13 @@ export const routes: Routes = [
         loadComponent: () => import('./goals/my-goals/my-goals.component').then(m => m.MyGoalsComponent)
     },
     {
+        path: 'public/:publicId',
+        loadComponent: () => import('./goals/public-goal-view/public-goal-view.component').then( m => m.PublicGoalViewComponent)
+    },
+    {
         path: 'public',
-        loadComponent: () => import('./goals/public-goals/public-goals.component').then(m => m.PublicGoalsComponent)
+        pathMatch: 'full',
+        loadComponent: () => import('./goals/public-goals/public-goals.component').then(m => m.PublicGoalsComponent),
+
     }
 ];

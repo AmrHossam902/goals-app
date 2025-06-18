@@ -12,6 +12,13 @@
             <strong>Deadline:</strong> <br/>
             {{ treeNode.data.deadline }}
         </div>
+        <a
+            [href]="'/public/' + treeNode.data.publicId"
+            class="node-link"
+            target="_blank"
+            >
+            <i class="pi pi-external-link"></i>
+        </a>
     </div>
 }
 @else if(viewType == 'PRIVATE' && privateViewType == 'DISPLAY'){

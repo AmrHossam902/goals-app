@@ -21,8 +21,8 @@ export class Goal {
   @Prop({ default: false })
   isPublic: boolean;
 
-  @Prop()
-  publicId?: string;
+  @Prop({ type: mongoose.Schema.Types.ObjectId })
+  publicId?: mongoose.Types.ObjectId;
 
   @Prop({ default: 0 })
   order: number;

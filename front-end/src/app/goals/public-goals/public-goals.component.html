@@ -1,1 +1,18 @@
-<p>public-goals works!</p>
+@if(requestStatus == 'FETCHING'){
+    <div>...loading</div>
+}
+@else if(requestStatus == 'COMPLETE' && goalNodes.length){
+
+    @for (node of goalNodes; track node.data._id) {
+        <div>
+            <goal-node [treeNode]="node" viewType="PUBLIC"></goal-node>
+        </div>
+    }
+}
+@else {
+    <div>no public Goals found</div>
+}
+
+
+
+
