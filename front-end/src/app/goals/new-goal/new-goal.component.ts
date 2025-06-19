@@ -32,7 +32,7 @@ export class NewGoalComponent {
   parentNode: TreeNode | null = null;
 
   @Output()
-  goalCreated = new EventEmitter<IGoal>();
+  goalCreated = new EventEmitter<{ parentNode: TreeNode | null, newGoal: IGoal}>();
 
   goalForm!: FormGroup;
   errors: string[] = [];
@@ -70,7 +70,7 @@ export class NewGoalComponent {
             this.errors.push("some fields are missing");
           }
       
-      if (this.goalForm.errors?.['afterParentDeadline']) {
+      if (this.goalForm.controls['deadLine'].errors?.['afterParentDeadline']) {
         this.errors.push("Deadline cannot be after parent goal's deadline");
       }
       return;
@@ -92,6 +92,7 @@ export class NewGoalComponent {
       (res: any) => {
         setTimeout(()=>{
           this.requestStatus = 'SUCCESS';
+          this.goalCreated.emit({parentNode: this.parentNode, newGoal: res });
         }, 1000); 
       },
       (err: any) => {
@@ -108,13 +109,15 @@ export class NewGoalComponent {
       if(!this.parentNode) // root goal, no parent to compare
         return null;
 
-
-      const parentDeadline = this.parentNode.data.deadLine;
+      const parentDeadline = this.parentNode.data.deadline;
       const currentDeadline = control.value;
-  
-      return new Date(currentDeadline) < new Date(parentDeadline)
+      
+
+      const val = new Date(currentDeadline) < new Date(parentDeadline)
         ? null
         : { afterParentDeadline: true };
+
+      return val;
     };
   }
 }

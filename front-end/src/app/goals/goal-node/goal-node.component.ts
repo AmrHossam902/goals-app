@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TreeNode } from 'primeng/api';
 import { DatePickerModule } from 'primeng/datepicker';
@@ -32,6 +32,9 @@ export class GoalNodeComponent implements OnInit {
   @Input()
   viewType: 'PUBLIC' | 'PRIVATE' = 'PRIVATE';
   privateViewType: PrivateViewType = 'DISPLAY';
+
+  @Output()
+  createChildEvent: EventEmitter<TreeNode> = new EventEmitter();
   
   editForm!: FormGroup;
   editErrors: string[] = [];
@@ -93,6 +96,9 @@ export class GoalNodeComponent implements OnInit {
 
   }
 
+  onCreateChild(parentNode: TreeNode){
+    this.createChildEvent.emit(parentNode);
+  }
 
 
 }

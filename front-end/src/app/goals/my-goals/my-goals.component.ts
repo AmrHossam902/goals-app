@@ -27,7 +27,9 @@ import { GoalNodeComponent } from '../goal-node/goal-node.component';
 export class MyGoalsComponent implements OnInit{
   
   visible: boolean = false;
-  
+  nodes!: TreeNode[];
+  newGoalFormParentNodeRef: TreeNode | null = null;
+
   constructor(
     @Optional() public dragDropService: TreeDragDropService,
           public goalsService: GoalsService  
@@ -57,46 +59,6 @@ export class MyGoalsComponent implements OnInit{
     return node;
   }
 
-  nodes!: TreeNode[];
-  
-  /* [
-    {
-      label: 'goal 1',
-      data: {
-        title: 'Goal 1',
-        description: 'Description for Goal 1',
-        level: 1
-      },
-      expanded: false,
-      children: [
-        {
-          label: 'sub-goal 1-1',
-          data: {
-            title: 'Sub-Goal 1-1',
-            description: 'Description for Goal 1',
-            level: 2
-          },
-        },
-        {
-          label: 'sub-goal 1-2',
-          data: {
-            title: 'Sub-Goal 1-2',
-            description: 'Description for Goal 1',
-            level: 2
-          },
-        }
-      ]
-    },
-    {
-      label: 'Goal2',
-      data: {
-        title: 'Goal 2',
-        description: 'Description for Goal 2',
-      },
-      expanded: false
-    }
-  ]; */
-
 
   toggleNode(node: TreeNode) {
     node.expanded = !node.expanded;
@@ -104,5 +66,49 @@ export class MyGoalsComponent implements OnInit{
 
   showModal(){
     this.visible = true;
+  }
+
+  hideModal(){
+    this.visible = false;
+  }
+
+  onNewGoalCreated( { parentNode, newGoal }: { parentNode: TreeNode | null, newGoal: IGoal} ){
+    this.hideModal();
+    
+    if(!parentNode){
+      this.nodes.push({
+          label: newGoal.title,
+          data: {
+            ...newGoal,
+            level: 0,
+          },
+          expanded: false,
+      });
+      return;
+    }
+
+    if(!parentNode.children)
+      parentNode.children = [];
+
+    parentNode.children.push({
+      label: newGoal.title,
+          data: {
+            ...newGoal,
+            level: parentNode.data.level + 1,
+          },
+          expanded: false,
+    })
+
+  }
+
+  onCreateRootGoal(){
+    this.newGoalFormParentNodeRef = null;
+    this.showModal();
+  }
+
+  onCreateChildGoal(parentNode: TreeNode){
+    console.log("create child goal")
+    this.newGoalFormParentNodeRef = parentNode;
+    this.showModal();
   }
 }

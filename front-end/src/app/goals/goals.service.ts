@@ -15,7 +15,7 @@ export class GoalsService {
   }
 
   createNewGoal(goal:IGoal){
-    return this.http.post('http://localhost:3000/goals', goal);
+    return this.http.post<IGoal>('http://localhost:3000/goals', goal);
   }
 
   updateGoal(goal: IGoal) {

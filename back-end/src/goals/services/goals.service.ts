@@ -17,6 +17,16 @@ export class GoalsService {
         }
 
         const goal = new this.goalModel(goalData);
+        
+        if(goalData.parentId){
+            await this.goalModel.updateOne({
+                _id: new Types.ObjectId(goalData.parentId)
+            },
+            {
+                $push: { childGoals: new Types.ObjectId(goal._id) }
+            });
+        }
+        
         return goal.save();
     }
 

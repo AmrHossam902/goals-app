@@ -1,18 +1,20 @@
-<button class="add-goal-btn" (click)="showModal()">+ Add Goal</button>
+<button class="add-goal-btn" (click)="onCreateRootGoal()">+ Add Goal</button>
 <p-tree
-  [value]="nodes"
-  [draggableNodes]="true"
-  [droppableNodes]="true"
-  dragdropScope="self" 
+  [value]="nodes" 
 >
   <ng-template let-node pTemplate="default">
-    <goal-node [treeNode]="node"></goal-node>
+    <goal-node 
+      [treeNode]="node"
+      (createChildEvent)="onCreateChildGoal($event)"></goal-node>
   </ng-template>
 </p-tree>
 
 <p-dialog [(visible)]="visible">
   <ng-template #headless>
       <div>
-        <new-goal></new-goal>
+        <new-goal 
+          [parentNode]="newGoalFormParentNodeRef"
+          (goalCreated)="onNewGoalCreated($event)"
+          ></new-goal>
       </div>
 </ng-template>
