@@ -1,18 +1,22 @@
 import { Routes } from '@angular/router';
+import { NotFoundComponent } from './common/components/notfount.component';
 
 export const routes: Routes = [
     {
-        path: 'my-goals',
-        loadComponent: () => import('./goals/my-goals/my-goals.component').then(m => m.MyGoalsComponent)
-    },
-    {
-        path: 'public/:publicId',
-        loadComponent: () => import('./goals/public-goal-view/public-goal-view.component').then( m => m.PublicGoalViewComponent)
-    },
-    {
-        path: 'public',
+        path: '',
         pathMatch: 'full',
-        loadComponent: () => import('./goals/public-goals/public-goals.component').then(m => m.PublicGoalsComponent),
-
+        redirectTo: 'login'
+    },
+    {
+        path: '',
+        loadChildren: () => import('./goals/goals.routes').then( m => m.routes )
+    },
+    {
+        path: '',
+        loadChildren: () => import('./auth/auth.routes').then( m => m.routes)
+    },
+    {
+        path: '**',
+        component: NotFoundComponent
     }
 ];

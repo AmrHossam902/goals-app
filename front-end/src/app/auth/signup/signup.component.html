@@ -1,1 +1,73 @@
-<p>signup works!</p>
+<div class="wrapper">
+    <form class="sign-up" [formGroup]="signupForm">
+        <label>
+            Username:
+            <br/>
+            <input 
+                pInputText 
+                formControlName="name" 
+                [ngClass]="{
+                    'invalid-field': signupForm.controls['name'].invalid && 
+                    signupForm.controls['name'].touched
+                }" 
+            />
+        </label>
+        <div class="error" *ngIf="signupForm.get('name')?.invalid && signupForm.get('name')?.touched">
+          Username is required (min 3 chars).
+        </div>
+        <br/>       
+
+        <label>
+            Email:
+            <br/>
+            <input 
+                pInputText 
+                formControlName="email" 
+                type="email"
+                [ngClass]="{
+                    'invalid-field': signupForm.controls['email'].invalid && 
+                    signupForm.controls['email'].touched
+                }" 
+            />
+        </label>
+        <div class="error" *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.touched">
+          Enter a valid email.
+        </div>
+        <br/>
+      
+        <label>
+            Password:
+            <br />
+            <input 
+                pInputText 
+                formControlName="password" 
+                type="password" 
+                [ngClass]="{
+                    'invalid-field': signupForm.controls['password'].invalid && 
+                    signupForm.controls['password'].touched
+                }"    
+            />
+        </label>
+        <div class="error" *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.touched">
+            Password must be at least 6 characters.
+        </div>
+        <br/>
+      
+        <button [disabled]="signupForm.invalid" (click)="onSubmit()">
+            Sign Up
+        </button>
+
+        @if(requestStatus == 'SUCCESS') {
+            <div class="success-msg">
+                <span>user created successfully</span>
+                <br/>
+                <a href="../login">login</a>
+            </div>
+        }
+        @else if(requestStatus == 'ERROR') {
+            <div class="error-msg">
+                {{ errorMsg }}
+            </div>
+        }
+    </form>
+</div>

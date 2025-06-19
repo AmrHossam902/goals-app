@@ -18,11 +18,11 @@ export class GoalsController {
 
     @UseGuards(JwtAuthGuard)
     @Post()
-    async createNewGoal(@CurrentUser() user, @Body() goalData: Goal){
+    async createNewGoal(@CurrentUser() user:User, @Body() goalData: Goal){
         
         console.log('Creating new goal:', goalData);
 
-        goalData.ownerId = new Types.ObjectId("68515ba30643eef9f60ffd1e");
+        goalData.ownerId = new Types.ObjectId(user._id);
         return this.goalsService.createNewGoal(goalData);
      
     }
@@ -31,16 +31,14 @@ export class GoalsController {
     @UseGuards(JwtAuthGuard)
     @Get()
     async getMyGoals(@CurrentUser() user: User) : Promise<Goal[]> {
-        return this.goalsService.getUserGoals("68515ba30643eef9f60ffd1e");
+        return this.goalsService.getUserGoals(user._id!);
     }
 
     @UseGuards(JwtAuthGuard)
     @Put(':id')
-    async updateGoal(@Param('id') id: string, @CurrentUser()user, @Body() goalData: Goal){
+    async updateGoal(@Param('id') id: string, @CurrentUser()user:User, @Body() goalData: Goal){
         goalData._id = id; 
-        return this.goalsService.putGoal("68515ba30643eef9f60ffd1e", goalData);
+        return this.goalsService.putGoal(user._id!, goalData);
     }
-
-
 
 }

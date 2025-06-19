@@ -11,15 +11,20 @@ export class AuthController {
         private userService: UserService 
     ){}
 
-    @Get('test')
-    test(){
-        return 'ok';
+
+    @Post('register')
+    async registerNewUser(@Body() data: User){
+        return this.userService.createNewUser(data);
     }
 
-    @Post()
-    async createNewUser(@Body() req: User): Promise<User> {
-        console.log('Creating new user:', req);
-        return this.userService.createNewUser(req);
+    @Post('login')
+    async loginUser(@Body() credentials : Pick<User, 'email' | 'password'>){
+        return this.userService.loginUser(credentials);
+    }
+
+    @Post('refresh')
+    async refreshAccessToken(@Body('refreshToken') refreshToken: string){
+        return this.userService.refreshAccessToken(refreshToken);
     }
 
     @Get()

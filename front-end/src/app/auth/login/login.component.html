@@ -1,1 +1,46 @@
-<p>login works!</p>
+<div class="wrapper">
+    <form class="sign-up" [formGroup]="loginForm">
+      <label>
+        Email:
+        <br />
+        <input
+          pInputText
+          formControlName="email"
+          type="email"
+          [ngClass]="{
+            'invalid-field': loginForm.controls['email'].invalid &&
+            loginForm.controls['email'].touched
+          }"
+        />
+      </label>
+      <br />
+  
+      <label>
+        Password:
+        <br />
+        <input
+          pInputText
+          formControlName="password"
+          type="password"
+          [ngClass]="{
+            'invalid-field': loginForm.controls['password'].invalid &&
+            loginForm.controls['password'].touched
+          }"
+        />
+      </label>
+      <br />
+  
+      <button [disabled]="loginForm.invalid" (click)="onSubmit()">Login</button>
+
+      @if (requestStatus == 'ERROR') {
+        <div class="error-msg">
+          {{ errorMsg }}
+        </div>
+      }
+
+      <br/>
+      <div style="text-align: center;">
+        don't have account ? <a href="../signup">signup</a>
+      </div>
+    </form>
+  </div>
