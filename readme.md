@@ -18,7 +18,7 @@
    Both the frontend and backend require **Node.js v20**.
 
 2. **Start MongoDB and Mongo Express**  
-   Use Docker Compose to start MongoDb + Express:
+   Use Docker Compose to start MongoDb + Mongo Express:
 
    ```bash
    docker compose up -d
